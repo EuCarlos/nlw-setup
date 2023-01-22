@@ -4,7 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "db:create": "npx prisma init --datasource-provider SQLite",
+    "db:migrate": "npx prisma migrate dev",
+    "db:view": "npx prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^4.9.0",
