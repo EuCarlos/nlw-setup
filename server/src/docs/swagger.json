@@ -1,0 +1,345 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "NLW Setup API",
+    "description": "Project Habit Tracker developed during the Next Level Week Setup, on the Ignite trail.",
+    "termsOfService": "http://swagger.io/terms/",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "url": "localhost:3333/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Main",
+      "description": "All main routes"
+    },
+    {
+      "name": "Notification",
+      "description": "All notification routes"
+    }
+  ],
+  "paths": {
+    "/summary": {
+      "get": {
+        "tags": [
+          "Main"
+        ],
+        "summary": "Get summary",
+        "description": "Get summary of habits tracked during the year in array format",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "object"
+                  },
+                  "example": [
+                    {
+                      "id": "d241f441-a045-4974-8885-4688c27c09dc",
+                      "date": "2023-01-02T03:00:00.000Z",
+                      "completed": 1,
+                      "amount": 1
+                    },
+                    {
+                      "id": "3147419b-6240-4970-9ffb-00277832a1e0",
+                      "date": "2023-01-06T03:00:00.000Z",
+                      "completed": 1,
+                      "amount": 1
+                    },
+                    {
+                      "id": "46754234-9dd0-4700-9b08-07fe1913d43c",
+                      "date": "2023-01-04T03:00:00.000Z",
+                      "completed": 2,
+                      "amount": 2
+                    },
+                    {
+                      "id": "cd2ef051-f05c-4eea-b850-2c72c5db5507",
+                      "date": "2023-01-24T03:00:00.000Z",
+                      "completed": 3,
+                      "amount": 3
+                    },
+                    {
+                      "id": "48eb3e74-9b2b-449d-91a5-f615b762d6f5",
+                      "date": "2023-01-26T03:00:00.000Z",
+                      "completed": 3,
+                      "amount": 4
+                    },
+                    {
+                      "id": "555b3365-e8ff-4ea2-be23-f49f96d90578",
+                      "date": "2023-01-27T03:00:00.000Z",
+                      "completed": 2,
+                      "amount": 5
+                    },
+                    {
+                      "id": "3c816d43-72b0-4e3e-ace3-5c9c5c0ad9ac",
+                      "date": "2023-01-31T03:00:00.000Z",
+                      "completed": 0,
+                      "amount": 4
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/day": {
+      "get": {
+        "tags": [
+          "Main"
+        ],
+        "summary": "Get habit tracker",
+        "description": "Get possible habits and completed habits during the day informed in the query",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date",
+            "description": "Maximum content per page",
+            "required": true,
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-01-31T03:00:00.000Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "possibleHabits": {
+                      "items": {
+                        "type": "object"
+                      },
+                      "example": [
+                        {
+                          "id": "0730ffac-d039-4194-9571-01aa2aa0efbd",
+                          "title": "Beber 2L água",
+                          "created_at": "2022-12-31T06:00:00.000Z"
+                        },
+                        {
+                          "id": "eaec80db-4ea7-407c-998b-5e90bb877038",
+                          "title": "Comer saudávelmente",
+                          "created_at": "2023-01-25T03:00:00.000Z"
+                        },
+                        {
+                          "id": "fa1a1bcf-3d87-4626-8c0d-d7fd1255ac00",
+                          "title": "Dormir 8h",
+                          "created_at": "2023-01-08T06:00:00.000Z"
+                        }
+                      ]
+                    },
+                    "completedHabits": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": [
+                        "0730ffac-d039-4194-9571-01aa2aa0efbd",
+                        "eaec80db-4ea7-407c-998b-5e90bb877038"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/habits/": {
+      "post": {
+        "tags": [
+          "Main"
+        ],
+        "summary": "Create new habit",
+        "description": "Creates a new habit informing the title and an array with the days of the week",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Create a new habit",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Ler livro por 30 minutos"
+                },
+                "weekDays": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "example": [
+                    0,
+                    2,
+                    4,
+                    6
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          }
+        }
+      }
+    },
+    "/habits/{habitId}/toggle": {
+      "patch": {
+        "tags": [
+          "Main"
+        ],
+        "summary": "Toggle habit",
+        "description": "Toggle habit",
+        "operationId": "toggleHabitById",
+        "parameters": [
+          {
+            "name": "habitId",
+            "in": "path",
+            "description": "Habit id registered in the database",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0730ffac-d039-4194-9571-01aa2aa0efbd"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          }
+        }
+      }
+    },
+    "/push/public_key": {
+      "get": {
+        "tags": [
+          "Notification"
+        ],
+        "summary": "Get public key",
+        "description": "Get public key",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "publicKey": {
+                      "type": "string",
+                      "example": "BZXYl79b5QXVTk1v4KyPFvwgaT3OhEt4ptR8Opdha1LVxy8n6103HHpiu7iVQ0sBwl0_xZ_Gc0Yj4c9qH2u5hbw"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/push/register": {
+      "post": {
+        "tags": [
+          "Notification"
+        ],
+        "summary": "Register a notification",
+        "description": "Register a notification",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Create a new habit",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Notification"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          }
+        }
+      }
+    },
+    "/push/send": {
+      "post": {
+        "tags": [
+          "Notification"
+        ],
+        "summary": "Send a notification",
+        "description": "Send a notification",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Create a new habit",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Notification"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "type": "object",
+            "properties": {
+              "endpoint": {
+                "type": "string",
+                "example": "https://fcm.googleapis.com/fcm/send/..."
+              },
+              "keys": {
+                "type": "object",
+                "properties": {
+                  "p256dh": {
+                    "type": "string",
+                    "example": "ZLQELIDm-6b9Bl07YrEuXJ4BL_YBVQ0dvt9NQBGJxIQidJWHPNa9YrouvcQ9d7_MqzvGS9Alz60SZNCG3qfpk="
+                  },
+                  "auth": {
+                    "type": "string",
+                    "example": "8vQZ-SvRAN5eo-4ASlrwB=="
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
