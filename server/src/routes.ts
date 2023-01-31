@@ -94,7 +94,7 @@ export async function appRoutes(app: FastifyInstance) {
         if (dayHabit) {
             // remover a marcação de completo
             await prisma.dayHabit.delete({
-                where: { id: day.id }
+                where: { id: dayHabit.id }
             })
         } else {
             // completar o hábito
